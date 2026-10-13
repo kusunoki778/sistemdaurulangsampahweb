@@ -1,0 +1,404 @@
+/**
+ * Livora - Application styles
+ * (menggantikan stylesheet bawaan template Vite yang sudah tidak terpakai)
+ */
+
+/* ------------------------------------------------------------------
+ * Layout utama: Navbar (sticky) - konten - Footer
+ * ------------------------------------------------------------------ */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* ------------------------------------------------------------------
+ * Navbar responsive
+ * Desktop navigation disembunyikan di layar <= 768px (lihat .md-hidden
+ * pada index.css), dan tombol hamburger hanya muncul di layar tersebut.
+ * ------------------------------------------------------------------ */
+.mobile-menu-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Header lebih ramping agar muat di layar kecil */
+  .container header-inner {
+    height: 64px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Scrollbar horizontal tab yang halus
+ * ------------------------------------------------------------------ */
+.livora-tabs::-webkit-scrollbar {
+  height: 0;
+}
+
+/* ------------------------------------------------------------------
+ * Topbar admin (AdminLayout) - hover tombol aksi
+ * ------------------------------------------------------------------ */
+.admin-topbar-btn:hover {
+  background-color: #b91c1c !important;
+  color: #ffffff !important;
+}
+
+/* ------------------------------------------------------------------
+ * Sidebar admin CMS (AdminLayout) — hijau tua identitas Livora
+ * ------------------------------------------------------------------ */
+.admin-menu-btn {
+  display: none;
+}
+
+.admin-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background-color: #14532d;
+  border-right: 1px solid #166534;
+  padding: 20px 14px;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.admin-menu-group {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: rgba(212, 253, 229, 0.45);
+  margin: 18px 0 8px;
+  padding: 0 12px;
+}
+
+.admin-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #d1fae5;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.admin-menu-item:hover {
+  background-color: #166534;
+  color: #ffffff;
+}
+
+.admin-menu-item.active {
+  background-color: #dcfce7;
+  color: #14532d;
+  font-weight: 700;
+}
+
+.admin-menu-badge {
+  margin-left: auto;
+  background-color: #f59e0b;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 1px 8px;
+  border-radius: 999px;
+}
+
+.admin-sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .admin-menu-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background-color: #166534;
+    color: #ecfdf5;
+    border: none;
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    z-index: 95;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 0 10px 30px rgba(6, 78, 59, 0.45);
+  }
+
+  .admin-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .admin-sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(6, 78, 59, 0.55);
+    z-index: 94;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Utility responsive tambahan untuk grid halaman
+ * ------------------------------------------------------------------ */
+@media (max-width: 768px) {
+  .sm-grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .md-grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Halaman login admin CMS (/admin & /admin/login)
+ * Kartu tunggal "Portal Administrasi" di atas latar mint.
+ * ------------------------------------------------------------------ */
+.admin-login-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 40px 36px 32px;
+  box-shadow: 0 24px 60px -44px rgba(20, 83, 45, 0.45);
+  text-align: center;
+}
+
+.admin-login-eyebrow-dark {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #16a34a;
+}
+
+.admin-login-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.admin-login-note {
+  margin-top: 18px;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ------------------------------------------------------------------
+ * Halaman login & register member (/login | /register)
+ * Dua panel: merek hijau solid berpola grid | form putih + tab Masuk/Daftar
+ * ------------------------------------------------------------------ */
+.member-login {
+  display: grid;
+  grid-template-columns: minmax(260px, 44%) 1fr;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 540px;
+  box-shadow: 0 24px 60px -50px rgba(15, 23, 42, 0.5);
+}
+
+.member-login-side {
+  position: relative;
+  background-color: #16a34a;
+  color: #ffffff;
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* Garis grid halus di atas bidang hijau solid — tanpa gradasi */
+.member-login-side::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+}
+
+.member-login-eyebrow {
+  margin-top: 36px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.member-login-meta {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.member-login-meta > div {
+  display: flex;
+  gap: 14px;
+}
+
+.member-login-meta dt {
+  width: 86px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.member-login-meta dd {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.member-login-form {
+  padding: 44px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 860px) {
+  .member-login {
+    grid-template-columns: 1fr;
+  }
+
+  .member-login-form {
+    padding: 32px 24px;
+  }
+}
+
+/* Tab segmented Masuk | Daftar (AuthForm) */
+.auth-tab {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  background-color: #f1f5f9;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.auth-tab button {
+  padding: 10px 12px;
+  border: none;
+  border-radius: 9px;
+  background-color: transparent;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-tab button:hover {
+  color: #0f172a;
+}
+
+.auth-tab button.auth-tab-active {
+  background-color: #ffffff;
+  color: #15803d;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+
+.auth-tab button:focus-visible {
+  outline: 2px solid #16a34a;
+  outline-offset: 1px;
+}
+
+/* Ruang untuk tombol mata lihat-password (rightElement pada Input) */
+.auth-password-input input {
+  padding-right: 42px !important;
+}
+
+/* ------------------------------------------------------------------
+ * CMS: transisi halus konten, hover kartu & baris aksi
+ * ------------------------------------------------------------------ */
+.admin-content {
+  animation: adminFadeUp 0.3s ease both;
+}
+
+@keyframes adminFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.admin-stat-card {
+  font-variant-numeric: tabular-nums;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: #bbf7d0;
+  box-shadow: 0 12px 24px -18px rgba(20, 83, 45, 0.45);
+}
+
+.admin-quick-row:hover {
+  background-color: #ffffff !important;
+  border-color: #bbf7d0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-content {
+    animation: none;
+  }
+
+  .admin-stat-card {
+    transition: none;
+  }
+}
