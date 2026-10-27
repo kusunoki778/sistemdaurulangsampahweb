@@ -1091,11 +1091,12 @@ export default function Home({ onNavigate }) {
       {/* =====================================================================
           8. CTA PENUTUP — aplikasi pendamping (desain Figma, tanpa Play Store)
          ===================================================================== */}
-      <section className="reveal" style={{ backgroundColor: '#1c3527', color: '#ffffff', padding: '72px 0' }}>
+      <section style={{ backgroundColor: '#1c3527', color: '#ffffff', padding: '72px 0' }}>
         <div className="container">
           <div style={{ maxWidth: '820px', margin: '0 auto', textAlign: 'center' }}>
             <div>
               <span
+                className="reveal"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1113,17 +1114,23 @@ export default function Home({ onNavigate }) {
                 Aplikasi Pendamping Resmi
               </span>
               <h2
+                className="reveal"
                 style={{
                   fontSize: 'clamp(1.8rem, 3.2vw, 2.5rem)',
                   fontWeight: '800',
                   lineHeight: 1.2,
                   letterSpacing: '-0.5px',
                   marginBottom: '16px',
+                  color: '#ffffff',
+                  transitionDelay: '0.09s',
                 }}
               >
-                Mulai Catat & Kumpulkan Koin Daur Ulang di Ponsel Anda
+                Mulai Catat & Kumpulkan{' '}
+                <span style={{ color: '#86efac' }}>Koin Daur Ulang</span> di Ponsel
+                Anda
               </h2>
               <p
+                className="reveal"
                 style={{
                   fontSize: '1rem',
                   color: '#cbd5e1',
@@ -1132,6 +1139,7 @@ export default function Home({ onNavigate }) {
                   maxWidth: '56ch',
                   marginLeft: 'auto',
                   marginRight: 'auto',
+                  transitionDelay: '0.18s',
                 }}
               >
                 Jadikan daur ulang sebagai kebiasaan seru dan bermanfaat. Pantau
@@ -1141,8 +1149,8 @@ export default function Home({ onNavigate }) {
               </p>
 
               <div
-                className="grid grid-cols-2 md-grid-cols-1 gap-5"
-                style={{ marginBottom: '32px', textAlign: 'left' }}
+                className="reveal grid grid-cols-2 md-grid-cols-1 gap-5"
+                style={{ marginBottom: '32px', textAlign: 'left', transitionDelay: '0.27s' }}
               >
                 {ctaFeatures.map((f) => {
                   const { Icon } = f;
@@ -1187,6 +1195,7 @@ export default function Home({ onNavigate }) {
                 })}
               </div>
 
+              <div className="reveal" style={{ transitionDelay: '0.36s' }}>
               <Button
                 size="lg"
                 variant="primary"
@@ -1223,6 +1232,7 @@ export default function Home({ onNavigate }) {
                   </span>
                 </span>
               </Button>
+              </div>
             </div>
           </div>
         </div>
