@@ -71,6 +71,7 @@ export default function ArticleDetail({ identifier, onBack, onSelectArticle }) {
     <div style={{ backgroundColor: '#f8fafc', minHeight: '85vh', paddingBottom: '80px' }}>
       {/* Header ringkas: tombol kembali, kategori, waktu baca, judul, meta */}
       <section
+        className="reveal stagger"
         style={{
           backgroundColor: '#f0fdf4',
           paddingTop: '36px',
@@ -162,7 +163,7 @@ export default function ArticleDetail({ identifier, onBack, onSelectArticle }) {
       </section>
 
       {/* Article Body Container */}
-      <div className="container-narrow" style={{ marginTop: '36px' }}>
+      <div className="container-narrow reveal stagger" style={{ marginTop: '36px' }}>
         {/* Main Cover Image */}
         <div
           style={{

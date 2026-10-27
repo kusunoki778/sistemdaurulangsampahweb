@@ -143,7 +143,7 @@ export default function WasteCatalog({ showToast }) {
       </PageHeader>
 
       {/* Main Content Layout */}
-      <div className="container" style={{ marginTop: '40px' }}>
+      <div className="container reveal stagger-deep" style={{ marginTop: '40px' }}>
         <div
           style={{
             display: 'grid',

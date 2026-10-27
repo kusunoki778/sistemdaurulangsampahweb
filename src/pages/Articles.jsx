@@ -106,6 +106,7 @@ export default function Articles({ onSelectArticle }) {
           HERO — judul display, badge kecil, pencarian, dan chip kategori
          ===================================================================== */}
       <section
+        className="reveal stagger"
         style={{
           backgroundColor: '#ffffff',
           borderBottom: '1px solid #e2e8f0',
@@ -207,6 +208,7 @@ export default function Articles({ onSelectArticle }) {
           BAND HIJAU — artikel unggulan + katalog artikel terkini
          ===================================================================== */}
       <section
+        className="reveal stagger"
         style={{
           backgroundColor: '#f0fdf4',
           borderTop: '1px solid #dcfce7',

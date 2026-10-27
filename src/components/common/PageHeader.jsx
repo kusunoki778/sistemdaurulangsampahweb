@@ -10,7 +10,7 @@
  */
 export default function PageHeader({ eyebrow, title, subtitle, children }) {
   return (
-    <div style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0' }}>
+    <div className="reveal stagger" style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e2e8f0' }}>
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '32px' }}>
         {eyebrow && (
           <p

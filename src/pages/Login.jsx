@@ -193,7 +193,7 @@ export default function Login({ mode = 'login', onNavigate, showToast }) {
   ];
 
   return (
-    <div style={{ backgroundColor: '#f8fafc', minHeight: '85vh', paddingBottom: '60px' }}>
+    <div className="reveal stagger-deep" style={{ backgroundColor: '#f8fafc', minHeight: '85vh', paddingBottom: '60px' }}>
       <div className="container" style={{ paddingTop: '56px' }}>
         <div className="member-login">
           {/* Panel merek: hijau solid berpola grid (tanpa gradasi) */}

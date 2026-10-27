@@ -300,6 +300,56 @@ button:active:not(:disabled) {
   transform: translateY(0);
 }
 
+/* Stagger otomatis: anak kontainer muncul berurutan (jeda 90ms bertingkat).
+   Pasang "stagger" bersama "reveal" pada section — anak langsung kontainer
+   yang dianimasikan. "stagger-deep" untuk konten berkolom (anak level dua).
+   Bole juga dipasang langsung pada div kontainer (container/container-narrow). */
+.reveal.stagger > [class*='container'] > *,
+.reveal.stagger[class*='container'] > *,
+.reveal.stagger-deep > [class*='container'] > * > *,
+.reveal.stagger-deep[class*='container'] > * > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s ease-out, transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.stagger.reveal-visible > [class*='container'] > *,
+.reveal.stagger.reveal-visible[class*='container'] > *,
+.reveal.stagger-deep.reveal-visible > [class*='container'] > * > *,
+.reveal.stagger-deep.reveal-visible[class*='container'] > * > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Jeda: elemen ke-2 sampai ke-4 berurutan; daftar panjang (ke-5+) serentak di 0.4s */
+.reveal.stagger > [class*='container'] > *:nth-child(2),
+.reveal.stagger[class*='container'] > *:nth-child(2),
+.reveal.stagger-deep > [class*='container'] > * > *:nth-child(2),
+.reveal.stagger-deep[class*='container'] > * > *:nth-child(2) {
+  transition-delay: 0.09s;
+}
+
+.reveal.stagger > [class*='container'] > *:nth-child(3),
+.reveal.stagger[class*='container'] > *:nth-child(3),
+.reveal.stagger-deep > [class*='container'] > * > *:nth-child(3),
+.reveal.stagger-deep[class*='container'] > * > *:nth-child(3) {
+  transition-delay: 0.18s;
+}
+
+.reveal.stagger > [class*='container'] > *:nth-child(4),
+.reveal.stagger[class*='container'] > *:nth-child(4),
+.reveal.stagger-deep > [class*='container'] > * > *:nth-child(4),
+.reveal.stagger-deep[class*='container'] > * > *:nth-child(4) {
+  transition-delay: 0.27s;
+}
+
+.reveal.stagger > [class*='container'] > *:nth-child(n+5),
+.reveal.stagger[class*='container'] > *:nth-child(n+5),
+.reveal.stagger-deep > [class*='container'] > * > *:nth-child(n+5),
+.reveal.stagger-deep[class*='container'] > * > *:nth-child(n+5) {
+  transition-delay: 0.4s;
+}
+
 /* Transisi halaman — dipasang di <main key={pathname}> */
 @keyframes pageIn {
   from {
@@ -319,6 +369,15 @@ button:active:not(:disabled) {
 /* Hormati preferensi pengguna: kurangi gerakan */
 @media (prefers-reduced-motion: reduce) {
   .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .reveal.stagger > [class*='container'] > *,
+  .reveal.stagger[class*='container'] > *,
+  .reveal.stagger-deep > [class*='container'] > * > *,
+  .reveal.stagger-deep[class*='container'] > * > * {
     opacity: 1;
     transform: none;
     transition: none;

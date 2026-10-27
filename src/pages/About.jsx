@@ -237,7 +237,7 @@ export default function About({ onNavigate }) {
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '85vh' }}>
       {/* Hero */}
-      <section style={{ backgroundColor: '#ffffff', paddingTop: '64px', paddingBottom: '56px' }}>
+      <section className="reveal stagger" style={{ backgroundColor: '#ffffff', paddingTop: '64px', paddingBottom: '56px' }}>
         <div className="container">
           <div className="grid grid-cols-2 md-grid-cols-1 gap-8" style={{ alignItems: 'center' }}>
             <div>
@@ -466,7 +466,7 @@ export default function About({ onNavigate }) {
       </div>
 
       {/* Konteks & Urgensi */}
-      <section style={{ backgroundColor: '#f0fdf4', padding: '72px 0', marginTop: '56px' }}>
+      <section className="reveal stagger" style={{ backgroundColor: '#f0fdf4', padding: '72px 0', marginTop: '56px' }}>
         <div className="container">
           <div className="grid grid-cols-2 md-grid-cols-1 gap-8" style={{ alignItems: 'start' }}>
             <div>
@@ -583,7 +583,7 @@ export default function About({ onNavigate }) {
       </section>
 
       {/* Tiga Pilar Misi */}
-      <section style={{ backgroundColor: '#ffffff', padding: '72px 0' }}>
+      <section className="reveal stagger" style={{ backgroundColor: '#ffffff', padding: '72px 0' }}>
         <div className="container">
           <div style={{ marginBottom: '36px' }}>
             <div style={overlineStyle}>Tiga Pilar Misi</div>
@@ -649,7 +649,7 @@ export default function About({ onNavigate }) {
       </section>
 
       {/* Sinergi Dua Kanal */}
-      <section style={{ backgroundColor: '#f0fdf4', padding: '72px 0' }}>
+      <section className="reveal stagger" style={{ backgroundColor: '#f0fdf4', padding: '72px 0' }}>
         <div className="container">
           <div style={{ marginBottom: '36px' }}>
             <div style={overlineStyle}>Arsitektur Ekosistem</div>
@@ -755,7 +755,7 @@ export default function About({ onNavigate }) {
       </section>
 
       {/* Prinsip Kami Bekerja */}
-      <section style={{ backgroundColor: '#ffffff', padding: '72px 0' }}>
+      <section className="reveal stagger" style={{ backgroundColor: '#ffffff', padding: '72px 0' }}>
         <div className="container">
           <div style={{ marginBottom: '36px' }}>
             <div style={overlineStyle}>Fondasi Etis</div>
@@ -804,7 +804,7 @@ export default function About({ onNavigate }) {
       </section>
 
       {/* Kolaborasi di Lapangan */}
-      <section style={{ backgroundColor: '#f0fdf4', padding: '72px 0' }}>
+      <section className="reveal stagger" style={{ backgroundColor: '#f0fdf4', padding: '72px 0' }}>
         <div className="container">
           <div className="grid grid-cols-2 md-grid-cols-1 gap-8" style={{ alignItems: 'center' }}>
             <img

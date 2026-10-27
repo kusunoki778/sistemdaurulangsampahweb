@@ -96,7 +96,7 @@ export default function Contact({ showToast }) {
       />
 
       {/* Layout 2 kolom: info & FAQ | formulir pesan */}
-      <div className="container" style={{ marginTop: '40px' }}>
+      <div className="container reveal stagger-deep" style={{ marginTop: '40px' }}>
         <div
           style={{
             display: 'grid',

@@ -245,7 +245,7 @@ export default function Home({ onNavigate }) {
       {/* =====================================================================
           1. HERO — proposisi utama + statistik publik nyata
          ===================================================================== */}
-      <section className="reveal" style={{ backgroundColor: '#f0fdf4', padding: '64px 0 72px' }}>
+      <section className="reveal stagger-deep" style={{ backgroundColor: '#f0fdf4', padding: '64px 0 72px' }}>
         <div className="container">
           <div
             className="md-grid-cols-1"
@@ -436,7 +436,7 @@ export default function Home({ onNavigate }) {
       {/* =====================================================================
           2. MENGAPA LIVORA — 4 pilar edukasi (desain Figma)
          ===================================================================== */}
-      <section className="section-py reveal" style={{ backgroundColor: '#ffffff' }}>
+      <section className="section-py reveal stagger" style={{ backgroundColor: '#ffffff' }}>
         <div className="container">
           <div style={{ maxWidth: '720px', marginBottom: '44px' }}>
             <p
@@ -538,7 +538,7 @@ export default function Home({ onNavigate }) {
       {/* =====================================================================
           3. CARA KERJA — 4 langkah alur sirkular (desain Figma)
          ===================================================================== */}
-      <section className="section-py reveal" style={{ backgroundColor: '#f0fdf4' }}>
+      <section className="section-py reveal stagger" style={{ backgroundColor: '#f0fdf4' }}>
         <div className="container">
           <div
             style={{
@@ -679,7 +679,7 @@ export default function Home({ onNavigate }) {
       {/* =====================================================================
           4. DAMPAK — dampak positif lingkungan (desain Figma) + catatan jujur
          ===================================================================== */}
-      <section className="section-py reveal" style={{ backgroundColor: '#ecfdf5' }}>
+      <section className="section-py reveal stagger-deep" style={{ backgroundColor: '#ecfdf5' }}>
         <div className="container">
           <div
             className="md-grid-cols-1"
@@ -829,7 +829,7 @@ export default function Home({ onNavigate }) {
       {/* =====================================================================
           5. PRATINJAU KATALOG SAMPAH — data asli /jenis-sampah
          ===================================================================== */}
-      <section className="section-py reveal" style={{ backgroundColor: '#f8fafc' }}>
+      <section className="section-py reveal stagger" style={{ backgroundColor: '#f8fafc' }}>
         <div className="container">
           {sectionHead(
             'Nilai Setiap Sampah',
@@ -923,7 +923,7 @@ export default function Home({ onNavigate }) {
       {/* =====================================================================
           6. DROP POINT — informasi operasional offline
          ===================================================================== */}
-      <section className="reveal" style={{ backgroundColor: '#f0fdf4', padding: '64px 0' }}>
+      <section className="reveal stagger-deep" style={{ backgroundColor: '#f0fdf4', padding: '64px 0' }}>
         <div className="container">
           <div
             className="md-grid-cols-1"
@@ -1023,7 +1023,7 @@ export default function Home({ onNavigate }) {
       {/* =====================================================================
           7. FAQ — accordion
          ===================================================================== */}
-      <section className="section-py reveal" style={{ backgroundColor: '#ffffff' }}>
+      <section className="section-py reveal stagger" style={{ backgroundColor: '#ffffff' }}>
         <div className="container">
           {sectionHead(
             'Pertanyaan Umum',
