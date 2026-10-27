@@ -33,7 +33,7 @@ export default function Footer({ onNavigate }) {
   ];
 
   const dropPointInfo = [
-    'Setor langsung di tempat — tanpa antar-jemput',
+    'Setor langsung di drop point',
     'Buka Senin–Sabtu, 08.00–16.00 WIB',
     'Menerima plastik, kertas, logam, dan kaca',
     'Koin masuk setelah verifikasi admin',
