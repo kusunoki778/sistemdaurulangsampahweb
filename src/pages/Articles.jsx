@@ -157,8 +157,8 @@ export default function Articles({ onSelectArticle }) {
                   maxWidth: '62ch',
                 }}
               >
-                Panduan praktis, wawasan ilmiah, dan langkah mudah memilah sampah dari rumah untuk
-                mendukung gaya sirkular yang berkelanjutan.
+                Panduan memilah sampah dari rumah: cara sortir, menyimpan, dan
+                menyetornya ke drop point.
               </p>
             </div>
 

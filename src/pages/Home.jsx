@@ -94,7 +94,7 @@ export default function Home({ onNavigate }) {
       Icon: Search,
       title: 'Pelajari Jenis Sampah',
       description:
-        'Pahami klasifikasi sampah melalui artikel, kategori, dan panduan terpercaya di platform kami.',
+        'Kenali jenis sampah lewat artikel dan katalog nilai tukar di web ini.',
     },
     {
       step: '02',
@@ -106,16 +106,16 @@ export default function Home({ onNavigate }) {
     {
       step: '03',
       Icon: Smartphone,
-      title: 'Ajukan via Aplikasi',
+      title: 'Bawa ke Drop Point',
       description:
-        'Ajukan penyerahan sampah melalui aplikasi atau langsung ke drop point Livora dari tempat tinggal Anda.',
+        'Bawa sampah terpilah ke drop point Livora — ditimbang langsung di tempat.',
     },
     {
       step: '04',
       Icon: Coins,
       title: 'Dapatkan Koin Valid',
       description:
-        'Terima koin di aplikasi setelah admin memvalidasi jenis material dan berat timbangan secara transparan.',
+        'Koin masuk ke aplikasi setelah admin memvalidasi jenis dan berat sampah.',
     },
   ];
 
@@ -170,26 +170,26 @@ export default function Home({ onNavigate }) {
     {
       badge: 'PILAR 01',
       Icon: BookOpen,
-      title: 'Edukasi Berbasis Aksi',
-      desc: 'Panduan demi langkah memilah sampah rumah tangga sesuai standar daur ulang ideal, mudah diterapkan keluarga.',
+      title: 'Edukasi yang Praktis',
+      desc: 'Panduan langkah demi langkah memilah sampah rumah tangga, mudah diterapkan di rumah.',
     },
     {
       badge: 'PILAR 02',
       Icon: Coins,
       title: 'Transparansi Nilai Sampah',
-      desc: 'Mengetahui estimasi konversi koin dan nilai rupiah dari botol plastik, kardus, kaleng, dan lainnya secara transparan.',
+      desc: 'Lihat estimasi koin dan nilai rupiah dari botol plastik, kardus, kaleng, dan lainnya sebelum setor.',
     },
     {
       badge: 'PILAR 03',
       Icon: Recycle,
-      title: 'Pemilahan Tepat dari Sumber',
-      desc: 'Mengurangi residu di TPA dengan memilahkan material yang benar sejak dari rumah sebelum masuk ke rantai daur ulang.',
+      title: 'Memilah dari Rumah',
+      desc: 'Sampah terpilah langsung menuju pabrik daur ulang, bukan menumpuk di TPA.',
     },
     {
       badge: 'PILAR 04',
       Icon: Users,
-      title: 'Partisipasi Berkelanjutan',
-      desc: 'Integrasi dengan aplikasi mobile untuk mencatat rutinitas, misi, dan imbas daur ulang yang mendorong kebiasaan positif.',
+      title: 'Kebiasaan yang Terjaga',
+      desc: 'Aplikasi mobile mencatat rutinitas setor, misi, dan koin Anda dari waktu ke waktu.',
     },
   ];
 
@@ -272,7 +272,7 @@ export default function Home({ onNavigate }) {
                 }}
               >
                 <Leaf size={14} />
-                Inisiatif Pemilahan dari Sumber
+                Pemilahan Sampah dari Rumah
               </p>
               <h1
                 style={{
@@ -284,7 +284,7 @@ export default function Home({ onNavigate }) {
                   marginBottom: '18px',
                 }}
               >
-                Wujudkan Bumi Hijau <br /> Bersama Livora.
+                Setor Sampah Terpilah, <br /> Terima Koin.
               </h1>
               <p
                 style={{
@@ -295,9 +295,8 @@ export default function Home({ onNavigate }) {
                   maxWidth: '560px',
                 }}
               >
-                Platform edukasi pemilahan sampah dan panduan daur ulang praktis bagi
-                masyarakat Indonesia. Kenali material daur ulang, dan mulai aksi nyata
-                dari rumah Anda.
+                Belajar memilah sampah dari rumah, lalu setor ke drop point
+                Livora. Sampah terpilah ditimbang dan dihitung jadi koin.
               </p>
 
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
@@ -462,8 +461,8 @@ export default function Home({ onNavigate }) {
               Mengapa Livora?
             </h2>
             <p style={{ fontSize: '1rem', color: '#64748b', marginTop: '12px', lineHeight: 1.65 }}>
-              Fondasi edukasi untuk membangun kebiasaan daur ulang yang konsisten dan
-              berdampak nyata bagi masyarakat Indonesia.
+              Edukasi dulu, praktik kemudian — kebiasaan memilah yang konsisten
+              adalah dasar semuanya.
             </p>
           </div>
 
@@ -561,7 +560,7 @@ export default function Home({ onNavigate }) {
                   marginBottom: '10px',
                 }}
               >
-                Alur Simulus Sikular
+                Alur Setor Sampah
               </p>
               <h2
                 style={{
@@ -574,8 +573,7 @@ export default function Home({ onNavigate }) {
                 Cara Kerja Livora
               </h2>
               <p style={{ fontSize: '1rem', color: '#64748b', marginTop: '12px', lineHeight: 1.65 }}>
-                Empat tahap sederhana mengubah tumpukan barang tak terpakai menjadi
-                sumber daya yang berputar kembali.
+                Empat langkah dari sampah menumpuk di rumah jadi koin di akun Anda.
               </p>
             </div>
             <span
@@ -1142,10 +1140,9 @@ export default function Home({ onNavigate }) {
                   transitionDelay: '0.18s',
                 }}
               >
-                Jadikan daur ulang sebagai kebiasaan seru dan bermanfaat. Pantau
-                riwayat sampah yang Anda selamatkan, lalu lihat dan tukarkan koin
-                dengan hadiah pilihan — saldo digital, tumbler, bibit tanaman, dan
-                lainnya — langsung di Aplikasi Mobile Livora.
+                Setor sampah, kumpulkan koin, tukar jadi hadiah — saldo digital,
+                tumbler, bibit tanaman, dan lainnya. Semua tercatat di Aplikasi
+                Mobile Livora.
               </p>
 
               <div

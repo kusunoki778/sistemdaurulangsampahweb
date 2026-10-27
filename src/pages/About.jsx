@@ -75,22 +75,22 @@ const komposisiTpa = [
 const pilarList = [
   {
     no: 1,
-    title: 'Edukasi Terbuka Standar Industri',
-    desc: 'Menyediakan modul dan panduan klasifikasi material terbuka yang mengacu pada standar SNI serta kebutuhan riil pasar daur ulang, bukan sekadar simbol teori.',
-    footer: 'Kurikulum Terbuka',
+    title: 'Edukasi yang Gampang Diikuti',
+    desc: 'Panduan memilah mengikuti standar SNI dan kebutuhan nyata pasar daur ulang — jelas dan bisa langsung dipraktikkan di rumah.',
+    footer: 'Panduan Terbuka',
     footerIcon: <BookOpen size={13} />,
   },
   {
     no: 2,
-    title: 'Transparansi Valuasi Material',
-    desc: 'Menghadirkan transparansi harga pasar dan estimasi valuasi sampah anorganik agar setiap individu memahami bahwa setoran pemilahan memiliki nilai jual yang jelas.',
+    title: 'Harga yang Transparan',
+    desc: 'Nilai tukar tiap jenis sampah ditampilkan terbuka. Anda tahu perkiraan koin yang didapat sebelum datang ke drop point.',
     footer: 'Kalkulasi Jujur',
     footerIcon: <Tag size={13} />,
   },
   {
     no: 3,
-    title: 'Integrasi Instrumen Pemantauan',
-    desc: 'Mengembangkan integrasi pemantauan digital melalui aplikasi seluler yang praktis untuk memantau partisipasi harian, melacak progres setoran, dan menjaga konsistensi warga.',
+    title: 'Pencatatan Lewat Aplikasi',
+    desc: 'Aplikasi mobile mencatat setoran, koin, dan progres pemilahan Anda setiap hari.',
     footer: 'Alat Bantu Harian',
     footerIcon: <Smartphone size={13} />,
   },
@@ -103,24 +103,24 @@ const kanalList = [
     badgeIcon: <Globe size={13} />,
     meta: 'Akses Publik Tanpa Login',
     title: 'Website Publik Livora',
-    desc: 'Dirancang sebagai arsip komprehensif yang dapat diakses siapa saja, mulai dari pelajar, pengurus RT/RW, hingga pegiat komunitas lingkungan tanpa hambatan autentikasi.',
-    role: 'Peran Utama: Pembelajaran & Transparansi',
+    desc: 'Terbuka untuk siapa saja — pelajar, pengurus RT/RW, sampai komunitas lingkungan. Tanpa perlu login.',
+    role: 'Peran: Belajar & Cek Nilai Tukar',
     features: [
       {
         title: 'Direktori Katalog Sampah',
-        desc: 'Eksplorasi jenis polimer plastik, kertas, kaca, dan logam beserta cara penerimanya.',
+        desc: 'Jenis plastik, kertas, kaca, dan logam yang diterima beserta ketentuannya.',
       },
       {
         title: 'Kalkulasi Nilai Publik',
-        desc: 'Simulasi perhitungan koin dan Rupiah berdasarkan berat material secara transparan.',
+        desc: 'Hitung sendiri perkiraan koin dari berat sampah sebelum setor.',
       },
       {
         title: 'Artikel & Riset Komparatif',
-        desc: 'Panduan pemilahan rumah tangga, studi kasus penggunaan logam, dan informasi regulasi.',
+        desc: 'Panduan memilah di rumah dan informasi seputar daur ulang.',
       },
       {
         title: 'Kanal Komunitas',
-        desc: 'Ruang komunikasi bagi bank sampah mandiri, sekolah, dan institusi wilayah lokal.',
+        desc: 'Untuk bank sampah mandiri, sekolah, dan komunitas lokal.',
       },
     ],
   },
@@ -130,24 +130,24 @@ const kanalList = [
     badgeIcon: <Smartphone size={13} />,
     meta: 'Android & iOS',
     title: 'Aplikasi Mobile Livora',
-    desc: 'Instrumen praktis bagi individu untuk mencatat aktivitas pemilahan setiap kali menyetorkan sampah ke drop point terpusat Livora terdekat.',
-    role: 'Peran Utama: Partisipasi Lapangan & Insentif',
+    desc: 'Catat setoran sampah Anda setiap kali datang ke drop point Livora.',
+    role: 'Peran: Catat Setoran & Tukar Koin',
     features: [
       {
         title: 'Verifikasi Timbangan Digital',
-        desc: 'Pemindaian kode QR timbangan di drop point untuk pencatatan berat yang tervalidasi.',
+        desc: 'Pindai QR di timbangan drop point — berat sampah langsung tercatat.',
       },
       {
         title: 'Dompet Koin Digital',
-        desc: 'Akumulasi setoran bersih hasil pemilahan menjadi saldo dompet digital atau token listrik.',
+        desc: 'Koin hasil setor terkumpul jadi saldo — bisa ditukar hadiah atau token listrik.',
       },
       {
         title: 'Misi & Kuis Harian',
-        desc: 'Pengingat jadwal setoran mingguan dan kuis pengetahuan tentang kebiasaan bebas plastik sekali pakai.',
+        desc: 'Pengingat jadwal setor dan kuis harian untuk poin tambahan.',
       },
       {
         title: 'Informasi Lokasi Drop Point',
-        desc: 'Petunjuk alamat dan jam operasional drop point terpusat Livora yang resmi di wilayah Anda.',
+        desc: 'Alamat dan jam buka drop point Livora.',
       },
     ],
   },
@@ -166,7 +166,7 @@ const prinsipList = [
   },
   {
     icon: <Handshake size={22} />,
-    title: 'Sinergi dengan Bank Sampah & Pengolah Lokal',
+    title: 'Kerja Sama dengan Bank Sampah & Pengolah Lokal',
     desc: 'Livora tidak menggantikan bank sampah unit maupun pekerja kebersihan yang telah beroperasi bertahun-tahun. Kami bekerja sama secara teknis dan memastikan material yang dikirim sudah bersih agar margin kerja para pengolah lokal meningkat secara adil.',
   },
 ];
@@ -247,7 +247,7 @@ export default function About({ onNavigate }) {
                 style={{ marginBottom: '20px' }}
                 icon={<Sprout size={13} />}
               >
-                Inisiatif &amp; Visi Lingkungan
+                Tentang Livora
               </Badge>
               <h1
                 style={{
@@ -258,12 +258,11 @@ export default function About({ onNavigate }) {
                   lineHeight: 1.12,
                 }}
               >
-                Membangun Kesadaran Pemilahan Sampah dari Sumber Rumah Tangga
+                Pemilahan Sampah Mulai dari Rumah
               </h1>
               <p style={{ fontSize: '1.05rem', color: '#64748b', marginTop: '20px', lineHeight: 1.75 }}>
-                Livora hadir sebagai jembatan edukatif antara kebiasaan harian masyarakat
-                Indonesia dengan rantai pasok industri daur ulang yang transparan, terukur,
-                dan bermartabat.
+                Livora menghubungkan kebiasaan memilah di rumah dengan pencatatan
+                bank sampah yang terbuka dan terukur.
               </p>
             </div>
 
@@ -587,7 +586,7 @@ export default function About({ onNavigate }) {
         <div className="container">
           <div style={{ marginBottom: '36px' }}>
             <div style={overlineStyle}>Tiga Pilar Misi</div>
-            <h2 style={sectionTitleStyle}>Langkah Konkret Mewujudkan Transformasi Pemilahan</h2>
+            <h2 style={sectionTitleStyle}>Misi yang Kami Kerjakan di Lapangan</h2>
           </div>
 
           <div className="grid grid-cols-3 md-grid-cols-1 gap-6">
@@ -761,8 +760,7 @@ export default function About({ onNavigate }) {
             <div style={overlineStyle}>Fondasi Etis</div>
             <h2 style={sectionTitleStyle}>Prinsip Kami Bekerja</h2>
             <p style={{ ...bodyTextStyle, maxWidth: '720px' }}>
-              Kami menolak retorika keberlanjutan yang sekadar kosmetik. Tiga prinsip ini memandu
-              setiap halaman panduan dan kerja sama operasional yang kami bangun.
+              Tiga prinsip ini kami pegang di setiap panduan dan kerja sama.
             </p>
           </div>
 
@@ -823,13 +821,12 @@ export default function About({ onNavigate }) {
             <div>
               <div style={overlineStyle}>Kolaborasi di Lapangan</div>
               <h2 style={sectionTitleStyle}>
-                Mendukung Rantai Sirkular Grassroots di Tingkat Rukun Warga
+                Bank Sampah Tumbuh dari Lingkungan RT/RW
               </h2>
               <p style={bodyTextStyle}>
-                Keberhasilan pemilahan sampah tidak ditentukan oleh teknologi semata, melainkan
-                oleh ketekunan kader lingkungan, petugas kebersihan, dan kesadaran keluarga di
-                tingkat RT/RW. Livora mendedikasikan materi edukasi ini sebagai panduan lapangan
-                bebas biaya bagi siapa saja yang ingin memulai bank sampah di lingkungannya.
+                Pemilahan yang berhasil ditentukan orang-orangnya: kader lingkungan,
+                petugas kebersihan, dan keluarga di RT/RW. Materi edukasi Livora bebas
+                biaya — pakai untuk memulai bank sampah di lingkungan Anda.
               </p>
               <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '22px' }}>
                 <span
@@ -843,7 +840,7 @@ export default function About({ onNavigate }) {
                     fontWeight: '600',
                   }}
                 >
-                  Standar Pemilahan Terpadu
+                  Sampah Terpilah & Bersih
                 </span>
                 <span
                   style={{

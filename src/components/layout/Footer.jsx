@@ -1,4 +1,4 @@
-import { Recycle, Phone, Mail, MapPin } from 'lucide-react';
+import { Recycle, Phone, Mail, MapPin, Clock } from 'lucide-react';
 
 /**
  * Footer public — tata letak mengikuti desain Figma (4 kolom):
@@ -32,11 +32,11 @@ export default function Footer({ onNavigate }) {
     { id: '__apk', label: 'Unduh Aplikasi' },
   ];
 
-  const kategoriPopuler = [
-    'Plastik PET (Polyethylene Terephthalate)',
-    'Kertas & Karton Duplex',
-    'Logam & Kaleng Aluminium',
-    'Kaca Bening & Botol Kaca',
+  const dropPointInfo = [
+    'Setor langsung di tempat — tanpa antar-jemput',
+    'Buka Senin–Sabtu, 08.00–16.00 WIB',
+    'Menerima plastik, kertas, logam, dan kaca',
+    'Koin masuk setelah verifikasi admin',
   ];
 
   const contactItems = [
@@ -120,8 +120,8 @@ export default function Footer({ onNavigate }) {
                 marginBottom: '18px',
               }}
             >
-              Bank sampah offline di Jakarta Barat. Setor langsung ke drop point — koin
-              tercatat rapi di akun Anda.
+              Bank sampah di Jakarta Barat. Bawa sampah terpilah ke drop point,
+              ditimbang, koin langsung masuk akun Anda.
             </p>
 
             <div
@@ -137,8 +137,8 @@ export default function Footer({ onNavigate }) {
                 padding: '7px 14px',
               }}
             >
-              <Recycle size={14} />
-              Inisiatif Sirkular Terpadu Indonesia
+              <Clock size={14} />
+              Buka Senin–Sabtu, 08.00–16.00 WIB
             </div>
           </div>
 
@@ -175,9 +175,9 @@ export default function Footer({ onNavigate }) {
             </ul>
           </div>
 
-          {/* Kolom 3: Kategori Sampah Populer */}
+          {/* Kolom 3: Jam & Lokasi Drop Point */}
           <div>
-            <h4 style={headingStyle}>Kategori Sampah Populer</h4>
+            <h4 style={headingStyle}>Jam & Lokasi Drop Point</h4>
             <ul
               style={{
                 listStyle: 'none',
@@ -188,9 +188,9 @@ export default function Footer({ onNavigate }) {
                 gap: '12px',
               }}
             >
-              {kategoriPopuler.map((kat) => (
-                <li key={kat} style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: 1.55 }}>
-                  {kat}
+              {dropPointInfo.map((item) => (
+                <li key={item} style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: 1.55 }}>
+                  {item}
                 </li>
               ))}
             </ul>
@@ -245,8 +245,8 @@ export default function Footer({ onNavigate }) {
             dilindungi.
           </div>
           <div style={{ color: '#86efac', textAlign: 'right', maxWidth: '520px', lineHeight: 1.6 }}>
-            Catatan: Platform web publik informatif & edukatif; transaksi dan penukaran
-            koin berjalan melalui Aplikasi Mobile Livora.
+            Setor sampah langsung di drop point. Katalog hadiah & penukaran koin ada
+            di Aplikasi Mobile Livora.
           </div>
         </div>
       </div>
