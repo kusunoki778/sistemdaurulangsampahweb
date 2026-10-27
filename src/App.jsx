@@ -198,9 +198,10 @@ function AppShell() {
   // Reveal bertahap: amati elemen .reveal pada halaman yang baru dirender.
   // Berjalan setelah DOM commit (perubahan loading & pathname).
   useEffect(() => {
-    const targets = document.querySelectorAll('.reveal');
+    const revealNow = (el) => el.classList.add('reveal-visible');
+
     if (!('IntersectionObserver' in window)) {
-      targets.forEach((el) => el.classList.add('reveal-visible'));
+      document.querySelectorAll('.reveal').forEach(revealNow);
       return;
     }
 
@@ -215,8 +216,32 @@ function AppShell() {
       },
       { threshold: 0.12 }
     );
-    targets.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+
+    const amati = () => {
+      document
+        .querySelectorAll('.reveal:not(.reveal-visible)')
+        .forEach((el) => observer.observe(el));
+    };
+
+    amati();
+
+    // Elemen .reveal yang baru muncul belakangan (mis. artikel selesai
+    // di-fetch) tetap diamati — pemindaian ulang dibatasi 1x per frame.
+    let terjadwal = false;
+    const watchdog = new MutationObserver(() => {
+      if (terjadwal) return;
+      terjadwal = true;
+      requestAnimationFrame(() => {
+        terjadwal = false;
+        amati();
+      });
+    });
+    watchdog.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      watchdog.disconnect();
+    };
   }, [pathname, loading]);
 
   if (loading) {
