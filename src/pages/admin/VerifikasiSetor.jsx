@@ -73,7 +73,7 @@ export default function VerifikasiSetor({ showToast }) {
       <AdminPageHeader
         badges={[{ text: 'Verifikasi Transaksi', variant: 'blue' }]}
         title="Verifikasi Setor Sampah"
-        subtitle="Verifikasi setoran offline (direct drop-off) member untuk menambahkan koin ke wallet mereka."
+        subtitle="Verifikasi setoran yang datang langsung ke drop point, lalu koin masuk ke dompet koin member."
         actions={
           <Button
             variant="secondary"
@@ -111,7 +111,7 @@ export default function VerifikasiSetor({ showToast }) {
               border: '1px solid #e2e8f0',
             }}
           >
-            Tidak ada permintaan setor sampah yang perlu diproses saat ini.
+            Belum ada setoran yang menunggu verifikasi.
           </div>
         ) : (
           <div

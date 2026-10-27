@@ -460,9 +460,9 @@ export default function AdminLayout() {
                 }}
               >
                 <div style={{ fontWeight: '700', color: '#dcfce7' }}>Livora CMS</div>
-                Bank sampah offline — titik kumpul terpusat
+                Bank sampah offline — satu titik kumpul
                 <br />
-                dikelola penuh oleh administrator.
+                yang dikelola admin.
               </div>
             </aside>
 
