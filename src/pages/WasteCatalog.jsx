@@ -195,6 +195,7 @@ export default function WasteCatalog({ showToast }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {filteredTypes.map((item) => {
                   const visual = getWasteTypeVisual(item.jenis_sampah);
+                  const gambarSampah = item.gambar || visual.img;
                   return (
                     <Card
                       key={item.id}
@@ -208,7 +209,7 @@ export default function WasteCatalog({ showToast }) {
                       className="md-flex-col"
                     >
                       <img
-                        src={visual.img}
+                        src={gambarSampah}
                         alt={item.jenis_sampah}
                         style={{
                           width: '100px',

@@ -1,4 +1,4 @@
-import { apiClient } from './client';
+import { apiClient, toRequestBody } from './client';
 
 /**
  * Artikel edukasi.
@@ -53,30 +53,32 @@ export async function getAdminArticlesApi(params = {}) {
 /**
  * Ubah payload form web (deskripsi_singkat/konten_lengkap)
  * menjadi payload backend baru (slug/isi/status).
+ * File gambar (gambar_file) diteruskan apa adanya untuk upload Cloudinary.
  */
 function toBackendPayload(data) {
-  const isi = data.isi ?? data.konten_lengkap ?? '';
-  return {
+  const payload = {
     judul: data.judul,
     slug: data.slug || slugify(data.judul),
     kategori: data.kategori,
-    isi,
+    isi: data.isi ?? data.konten_lengkap ?? '',
     gambar: data.gambar || null,
     status: data.status || 'published',
   };
+  if (data.gambar_file) payload.gambar_file = data.gambar_file;
+  return payload;
 }
 
 export async function createArticleApi(data) {
   return await apiClient('/admin/artikels', {
     method: 'POST',
-    body: JSON.stringify(toBackendPayload(data)),
+    body: toRequestBody(toBackendPayload(data)),
   });
 }
 
 export async function updateArticleApi(id, data) {
   return await apiClient(`/admin/artikels/${id}`, {
     method: 'PUT',
-    body: JSON.stringify(toBackendPayload(data)),
+    body: toRequestBody(toBackendPayload(data)),
   });
 }
 

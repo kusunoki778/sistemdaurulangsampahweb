@@ -30,8 +30,11 @@ export async function apiClient(endpoint, options = {}) {
   const scope = resolveScope(endpoint, options);
   const token = localStorage.getItem(TOKEN_KEYS[scope] || TOKEN_KEYS.user);
 
+  // FormData (upload file) memasang Content-Type sendiri (multipart + boundary).
+  const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
+
   const headers = {
-    'Content-Type': 'application/json',
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     'Accept': 'application/json',
     ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
     ...options.headers,
@@ -43,6 +46,13 @@ export async function apiClient(endpoint, options = {}) {
   };
   // scope bukan bagian dari fetch config (hanya penentu token)
   delete config.scope;
+
+  // PHP hanya mem-parsing multipart pada POST — method lain dengan FormData
+  // dikirim sebagai POST + _method (method spoofing standar Laravel).
+  if (isFormData && config.method && config.method.toUpperCase() !== 'POST') {
+    config.body.append('_method', config.method.toUpperCase());
+    config.method = 'POST';
+  }
 
   try {
     const response = await fetch(url, config);
@@ -64,4 +74,25 @@ export async function apiClient(endpoint, options = {}) {
 }
 
 export { API_BASE_URL };
+
+/**
+ * Bungkus payload jadi FormData bila ada File di dalamnya (upload gambar),
+ * selain itu JSON biasa. Boolean dikirim '1'/'0' agar lolos validasi Laravel.
+ */
+export function toRequestBody(data) {
+  const hasFile = Object.values(data || {}).some((value) => value instanceof File);
+  if (!hasFile) return JSON.stringify(data);
+
+  const formData = new FormData();
+  Object.entries(data).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
+    if (typeof value === 'boolean') {
+      formData.append(key, value ? '1' : '0');
+      return;
+    }
+    formData.append(key, value);
+  });
+  return formData;
+}
+
 export default apiClient;

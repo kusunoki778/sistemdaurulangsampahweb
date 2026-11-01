@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Edit3, Trash2, RefreshCw } from 'lucide-react';
 import Badge from '../../components/common/Badge';
 import Button from '../../components/common/Button';
+import ImageField from '../../components/common/ImageField';
 import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
 import { formatDate } from '../../utils/helpers';
@@ -32,6 +33,7 @@ export default function KelolaArtikel({ showToast }) {
     konten_lengkap: '',
     gambar: '',
   });
+  const [gambarFile, setGambarFile] = useState(null);
 
   const loadArticlesData = () =>
     getAdminArticlesApi()
@@ -66,6 +68,7 @@ export default function KelolaArtikel({ showToast }) {
       konten_lengkap: '',
       gambar: '',
     });
+    setGambarFile(null);
     setArticleModalOpen(true);
   };
 
@@ -78,17 +81,20 @@ export default function KelolaArtikel({ showToast }) {
       konten_lengkap: art.konten_lengkap,
       gambar: art.gambar || '',
     });
+    setGambarFile(null);
     setArticleModalOpen(true);
   };
 
   const handleSaveArticle = async (e) => {
     e.preventDefault();
+    const payload = { ...articleForm };
+    if (gambarFile) payload.gambar_file = gambarFile;
     try {
       if (editingArticleId) {
-        await updateArticleApi(editingArticleId, articleForm);
+        await updateArticleApi(editingArticleId, payload);
         if (showToast) showToast('Artikel berhasil diperbarui!', 'success');
       } else {
-        await createArticleApi(articleForm);
+        await createArticleApi(payload);
         if (showToast) showToast('Artikel baru berhasil diterbitkan!', 'success');
       }
       setArticleModalOpen(false);
@@ -324,6 +330,15 @@ export default function KelolaArtikel({ showToast }) {
             }
             placeholder="Tuliskan isi artikel edukasi secara lengkap di sini..."
             required
+          />
+
+          <ImageField
+            key={editingArticleId ? `edit-${editingArticleId}` : 'add'}
+            label="Gambar Artikel"
+            fileValue={gambarFile}
+            onFileChange={setGambarFile}
+            urlValue={articleForm.gambar}
+            onUrlChange={(value) => setArticleForm({ ...articleForm, gambar: value })}
           />
 
           <div

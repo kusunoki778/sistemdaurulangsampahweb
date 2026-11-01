@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Edit3, Trash2, RefreshCw } from 'lucide-react';
 import Badge from '../../components/common/Badge';
 import Button from '../../components/common/Button';
+import ImageField from '../../components/common/ImageField';
 import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
 import { formatCoins } from '../../utils/helpers';
@@ -49,7 +50,9 @@ export default function MasterKatalogReward({ showToast }) {
     stok: '',
     deskripsi: '',
     status_aktif: '1',
+    gambar: '',
   });
+  const [gambarFile, setGambarFile] = useState(null);
 
   const loadData = () =>
     getAdminKatalogRewardApi()
@@ -84,7 +87,9 @@ export default function MasterKatalogReward({ showToast }) {
       stok: '',
       deskripsi: '',
       status_aktif: '1',
+      gambar: '',
     });
+    setGambarFile(null);
     setModalOpen(true);
   };
 
@@ -97,7 +102,9 @@ export default function MasterKatalogReward({ showToast }) {
       stok: String(item.stok),
       deskripsi: item.deskripsi || '',
       status_aktif: item.status_aktif ? '1' : '0',
+      gambar: item.gambar || '',
     });
+    setGambarFile(null);
     setModalOpen(true);
   };
 
@@ -109,6 +116,7 @@ export default function MasterKatalogReward({ showToast }) {
       stok: Number(form.stok),
       status_aktif: form.status_aktif === '1',
     };
+    if (gambarFile) payload.gambar_file = gambarFile;
     try {
       if (editingId) {
         await updateKatalogRewardApi(editingId, payload);
@@ -317,6 +325,14 @@ export default function MasterKatalogReward({ showToast }) {
             value={form.deskripsi}
             onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
             placeholder="Contoh: Voucher digital dikirim ke nomor terdaftar (simulasi)"
+          />
+          <ImageField
+            key={editingId ? `edit-${editingId}` : 'add'}
+            label="Gambar Reward"
+            fileValue={gambarFile}
+            onFileChange={setGambarFile}
+            urlValue={form.gambar}
+            onUrlChange={(value) => setForm({ ...form, gambar: value })}
           />
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
             <Button variant="ghost" onClick={() => setModalOpen(false)}>

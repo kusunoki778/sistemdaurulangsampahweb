@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Edit3, Trash2, RefreshCw } from 'lucide-react';
 import Badge from '../../components/common/Badge';
 import Button from '../../components/common/Button';
+import ImageField from '../../components/common/ImageField';
 import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
 import { formatCoins } from '../../utils/helpers';
@@ -47,7 +48,9 @@ export default function MasterJenisSampah({ showToast }) {
     satuan: 'kg',
     poin_per_satuan: '',
     deskripsi: '',
+    gambar: '',
   });
+  const [gambarFile, setGambarFile] = useState(null);
 
   const loadData = () =>
     Promise.all([getAdminJenisApi(), getAdminKategoriApi()])
@@ -82,7 +85,9 @@ export default function MasterJenisSampah({ showToast }) {
       satuan: 'kg',
       poin_per_satuan: '',
       deskripsi: '',
+      gambar: '',
     });
+    setGambarFile(null);
     setModalOpen(true);
   };
 
@@ -94,7 +99,9 @@ export default function MasterJenisSampah({ showToast }) {
       satuan: item.satuan,
       poin_per_satuan: String(item.poin_per_satuan),
       deskripsi: item.deskripsi || '',
+      gambar: item.gambar || '',
     });
+    setGambarFile(null);
     setModalOpen(true);
   };
 
@@ -105,6 +112,7 @@ export default function MasterJenisSampah({ showToast }) {
       kategori_id: Number(form.kategori_id),
       poin_per_satuan: Number(form.poin_per_satuan),
     };
+    if (gambarFile) payload.gambar_file = gambarFile;
     try {
       if (editingId) {
         await updateJenisApi(editingId, payload);
@@ -285,6 +293,14 @@ export default function MasterJenisSampah({ showToast }) {
             value={form.deskripsi}
             onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
             placeholder="Contoh: Botol minuman bekas, dicuci dan tanpa tutup"
+          />
+          <ImageField
+            key={editingId ? `edit-${editingId}` : 'add'}
+            label="Gambar Jenis Sampah"
+            fileValue={gambarFile}
+            onFileChange={setGambarFile}
+            urlValue={form.gambar}
+            onUrlChange={(value) => setForm({ ...form, gambar: value })}
           />
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
             <Button variant="ghost" onClick={() => setModalOpen(false)}>

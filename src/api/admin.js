@@ -1,4 +1,4 @@
-import { apiClient } from './client';
+import { apiClient, toRequestBody } from './client';
 
 /** Ubah respons paginasi Laravel menjadi array biasa. */
 function unwrap(data) {
@@ -153,14 +153,14 @@ export async function getAdminJenisApi() {
 export async function createJenisApi(data) {
   return await apiClient('/admin/jenis-sampah', {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: toRequestBody(data),
   });
 }
 
 export async function updateJenisApi(id, data) {
   return await apiClient(`/admin/jenis-sampah/${id}`, {
     method: 'PUT',
-    body: JSON.stringify(data),
+    body: toRequestBody(data),
   });
 }
 
@@ -177,14 +177,14 @@ export async function getAdminKatalogRewardApi() {
 export async function createKatalogRewardApi(data) {
   return await apiClient('/admin/rewards', {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: toRequestBody(data),
   });
 }
 
 export async function updateKatalogRewardApi(id, data) {
   return await apiClient(`/admin/rewards/${id}`, {
     method: 'PUT',
-    body: JSON.stringify(data),
+    body: toRequestBody(data),
   });
 }
 
