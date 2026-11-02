@@ -12,6 +12,7 @@ function unwrap(data) {
 
 const SETOR_STATUS_TO_UI = {
   pending: 'Pending',
+  menunggu_konfirmasi: 'Menunggu Konfirmasi',
   approved: 'Diterima',
   rejected: 'Ditolak',
 };
@@ -24,7 +25,11 @@ const REWARD_STATUS_TO_UI = {
 };
 
 function normalizeSetor(item) {
-  return { ...item, status: SETOR_STATUS_TO_UI[item.status] || item.status };
+  return {
+    ...item,
+    status_mentah: item.status,
+    status: SETOR_STATUS_TO_UI[item.status] || item.status,
+  };
 }
 
 function normalizeReward(item) {
@@ -49,24 +54,48 @@ export async function getAdminUsersApi(params = {}) {
 
 /* --------------------------- Verifikasi Setor ---------------------------- */
 
-export async function getAdminSetorSampahApi(status = '') {
-  const query = status ? `?status=${encodeURIComponent(status)}` : '';
-  const res = await apiClient(`/admin/transaksi-setor${query}`);
+/**
+ * Daftar transaksi setor. `params` boleh string status (kompatibilitas lama)
+ * atau objek { status, search }.
+ */
+export async function getAdminSetorSampahApi(params = '') {
+  const options = typeof params === 'string' ? { status: params } : params;
+  const query = new URLSearchParams();
+  if (options.status) query.set('status', options.status);
+  if (options.search) query.set('search', options.search);
+
+  const qs = query.toString();
+  const res = await apiClient(`/admin/transaksi-setor${qs ? `?${qs}` : ''}`);
   return unwrap(res.data).map(normalizeSetor);
 }
 
 /**
- * Verifikasi setor: status 'Diterima' -> approve, 'Ditolak' -> reject.
+ * Admin membuat transaksi setor langsung di drop point.
+ * Body: { user_id, items: [{ jenis_sampah_id, jumlah }], catatan? }
+ * Respons berisi transaksi + QR sesi (token hanya muncul sekali di sini).
  */
-export async function updateStatusSetorApi(id, status, alasan = '') {
-  const endpoint =
-    status === 'Diterima'
-      ? `/admin/transaksi-setor/${id}/approve`
-      : `/admin/transaksi-setor/${id}/reject`;
-
-  return await apiClient(endpoint, {
+export async function createAdminSetorApi(data) {
+  return await apiClient('/admin/transaksi-setor', {
     method: 'POST',
-    body: JSON.stringify({ catatan: alasan }),
+    body: JSON.stringify(data),
+  });
+}
+
+/** Terbitkan QR baru; token lama otomatis tidak berlaku. */
+export async function reissueSetorQrApi(id) {
+  return await apiClient(`/admin/transaksi-setor/${id}/qr`, { method: 'POST' });
+}
+
+/** Fallback: cairkan koin tanpa konfirmasi QR user. */
+export async function selesaikanSetorApi(id) {
+  return await apiClient(`/admin/transaksi-setor/${id}/selesaikan`, { method: 'POST' });
+}
+
+/** Batalkan transaksi sebelum koin dicairkan. */
+export async function batalkanSetorApi(id, catatan) {
+  return await apiClient(`/admin/transaksi-setor/${id}/batalkan`, {
+    method: 'POST',
+    body: JSON.stringify({ catatan }),
   });
 }
 

@@ -32,7 +32,8 @@ export async function calculateWasteCoinsApi(nilai_tukar_id, jumlah) {
     satuan: item.satuan,
     jumlah: qty,
     koin_per_satuan: item.koin_per_satuan,
-    estimasi_koin: Math.round(item.koin_per_satuan * qty),
+    // Koin desimal 2 angka, tanpa pembulatan ke bilangan bulat.
+    estimasi_koin: Math.round(Number(item.koin_per_satuan) * qty * 100) / 100,
   };
 }
 
@@ -40,21 +41,6 @@ export async function calculateWasteCoinsApi(nilai_tukar_id, jumlah) {
 export async function getSetorHistoryApi() {
   const res = await apiClient('/transaksi-setor');
   return unwrapPaginated(res.data);
-}
-
-/**
- * Ajukan setor sampah offline (drop-off).
- * Body backend: { items: [{ jenis_sampah_id, jumlah }], catatan? }
- */
-export async function submitSetorSampahApi(payload) {
-  const items = payload.items || [
-    { jenis_sampah_id: payload.nilai_tukar_id, jumlah: payload.jumlah },
-  ];
-
-  return await apiClient('/transaksi-setor', {
-    method: 'POST',
-    body: JSON.stringify({ items, catatan: payload.catatan }),
-  });
 }
 
 /** Ambil array dari respons paginasi Laravel maupun array biasa. */
