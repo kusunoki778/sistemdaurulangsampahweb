@@ -279,7 +279,8 @@ export default function MasterJenisSampah({ showToast }) {
             <Input
               label="Poin per Satuan"
               type="number"
-              min="1"
+              min="0.01"
+              step="0.01"
               value={form.poin_per_satuan}
               onChange={(e) => setForm({ ...form, poin_per_satuan: e.target.value })}
               placeholder="Contoh: 150"

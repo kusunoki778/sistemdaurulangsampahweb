@@ -272,18 +272,6 @@ export function AuthProvider({ children }) {
     [activeRole]
   );
 
-  // Pindah akun demo lewat login API asli (bukan akun palsu lokal).
-  const switchAccount = useCallback(
-    async (role = 'user') => {
-      const creds =
-        role === 'admin'
-          ? { login: 'admin', password: 'admin123' }
-          : { login: 'gonin', password: 'password123' };
-      return login(creds.login, creds.password);
-    },
-    [login]
-  );
-
   const user = activeRole ? sessions[activeRole] : null;
   const isAdmin = activeRole === 'admin' && Boolean(sessions.admin);
 
@@ -296,7 +284,6 @@ export function AuthProvider({ children }) {
       logout,
       refreshUser,
       updateUser,
-      switchAccount,
       isAdmin,
       // Sesi tersimpan per-role (untuk guard route admin/user)
       sessions,
@@ -311,7 +298,6 @@ export function AuthProvider({ children }) {
       logout,
       refreshUser,
       updateUser,
-      switchAccount,
       isAdmin,
       sessions,
       activateSession,

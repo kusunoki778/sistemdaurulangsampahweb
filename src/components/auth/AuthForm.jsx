@@ -15,7 +15,6 @@ export default function AuthForm({
   initialMode = 'login',
   onSuccess,
   onModeChange,
-  onForgotPassword,
   accentColor = '#16a34a',
 }) {
   const { login, register } = useAuth();
@@ -186,27 +185,6 @@ export default function AuthForm({
           </button>
         }
       />
-
-      {/* Lupa password — hanya di mode masuk, bila halaman induk menyediakan navigasi */}
-      {!isRegister && !isAdminMode && onForgotPassword && (
-        <div style={{ marginTop: '-8px', marginBottom: '14px', textAlign: 'right' }}>
-          <button
-            type="button"
-            onClick={onForgotPassword}
-            style={{
-              backgroundColor: 'transparent',
-              border: 'none',
-              padding: 0,
-              color: '#16a34a',
-              fontSize: '0.82rem',
-              fontWeight: '600',
-              cursor: 'pointer',
-            }}
-          >
-            Lupa password?
-          </button>
-        </div>
-      )}
 
       {isRegister && (
         <Input

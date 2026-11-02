@@ -255,6 +255,7 @@ export default function GamifikasiKuis({ showToast }) {
               label="Koin Reward"
               type="number"
               min="0"
+              step="0.01"
               value={form.koin_reward}
               onChange={(e) => setForm({ ...form, koin_reward: e.target.value })}
               placeholder="Contoh: 50"

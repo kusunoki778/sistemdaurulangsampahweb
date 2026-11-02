@@ -2,14 +2,24 @@
  * Utility functions for Livora Web Frontend
  */
 
+/**
+ * Angka umum (statistik) — maksimal 2 angka desimal, format Indonesia.
+ */
 export function formatNumber(num) {
   if (num === null || num === undefined) return '0';
-  return new Intl.NumberFormat('id-ID').format(num);
+  return new Intl.NumberFormat('id-ID', { maximumFractionDigits: 2 }).format(Number(num));
 }
 
+/**
+ * Koin disimpan desimal 2 angka (tanpa pembulatan), jadi tampilkan
+ * maksimal 2 angka desimal — mis. 33,75 koin.
+ */
 export function formatCoins(amount) {
   if (amount === null || amount === undefined) return '0';
-  return new Intl.NumberFormat('id-ID').format(amount);
+  return new Intl.NumberFormat('id-ID', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(Number(amount));
 }
 
 export function formatDate(dateString) {

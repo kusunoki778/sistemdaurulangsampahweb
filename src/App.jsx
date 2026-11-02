@@ -36,8 +36,7 @@ import ProfilAdmin from './pages/admin/ProfilAdmin';
  *
  * Routing sekarang berbasis URL (bukan state di memori), sehingga:
  *  - `/`                 -> landing public user
- *  - `/login` `/register`-> halaman login/register member
- *  - `/dashboard`        -> dashboard member (wajib sesi user)
+ *  - `/login`            -> halaman login ADMIN (member pindah ke app)
  *  - `/admin` `/admin/login` -> HALAMAN LOGIN ADMIN (terpisah)
  *  - `/admin/dashboard`  -> panel CMS admin (wajib sesi admin)
  *

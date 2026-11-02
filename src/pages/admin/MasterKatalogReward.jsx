@@ -302,7 +302,8 @@ export default function MasterKatalogReward({ showToast }) {
             <Input
               label="Koin Dibutuhkan"
               type="number"
-              min="1"
+              min="0.01"
+              step="0.01"
               value={form.koin_dibutuhkan}
               onChange={(e) => setForm({ ...form, koin_dibutuhkan: e.target.value })}
               placeholder="Contoh: 15000"

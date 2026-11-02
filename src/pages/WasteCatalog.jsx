@@ -68,7 +68,7 @@ export default function WasteCatalog({ showToast }) {
       // Fallback perhitungan lokal bila API bermasalah
       const item = wasteTypes.find((w) => w.id === Number(selectedWasteId));
       if (item) {
-        const coins = Math.round(item.koin_per_satuan * Number(inputAmount));
+        const coins = Math.round(item.koin_per_satuan * Number(inputAmount) * 100) / 100;
         setCalcResult({
           jenis_sampah: item.jenis_sampah,
           satuan: item.satuan,

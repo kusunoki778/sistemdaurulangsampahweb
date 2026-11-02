@@ -171,7 +171,8 @@ export default function NilaiTukarKoin({ showToast }) {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <input
                             type="number"
-                            min="0"
+                            min="0.01"
+                            step="0.01"
                             value={draftValue}
                             onChange={(e) => handleDraftChange(item.id, e.target.value)}
                             style={{
