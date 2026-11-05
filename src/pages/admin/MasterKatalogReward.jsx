@@ -47,6 +47,7 @@ export default function MasterKatalogReward({ showToast }) {
     nama_reward: '',
     tipe: 'barang',
     koin_dibutuhkan: '',
+    nilai_rupiah: '',
     stok: '',
     deskripsi: '',
     status_aktif: '1',
@@ -84,6 +85,7 @@ export default function MasterKatalogReward({ showToast }) {
       nama_reward: '',
       tipe: 'barang',
       koin_dibutuhkan: '',
+      nilai_rupiah: '',
       stok: '',
       deskripsi: '',
       status_aktif: '1',
@@ -99,6 +101,7 @@ export default function MasterKatalogReward({ showToast }) {
       nama_reward: item.nama_reward,
       tipe: item.tipe,
       koin_dibutuhkan: String(item.koin_dibutuhkan),
+      nilai_rupiah: item.nilai_rupiah != null ? String(item.nilai_rupiah) : '',
       stok: String(item.stok),
       deskripsi: item.deskripsi || '',
       status_aktif: item.status_aktif ? '1' : '0',
@@ -113,6 +116,8 @@ export default function MasterKatalogReward({ showToast }) {
     const payload = {
       ...form,
       koin_dibutuhkan: Number(form.koin_dibutuhkan),
+      nilai_rupiah:
+        form.tipe === 'saldo_digital' && form.nilai_rupiah !== '' ? Number(form.nilai_rupiah) : null,
       stok: Number(form.stok),
       status_aktif: form.status_aktif === '1',
     };
@@ -319,6 +324,18 @@ export default function MasterKatalogReward({ showToast }) {
               required
             />
           </div>
+          {form.tipe === 'saldo_digital' && (
+            <Input
+              label="Nilai Rupiah (untuk struk payout)"
+              type="number"
+              min="0"
+              step="500"
+              value={form.nilai_rupiah}
+              onChange={(e) => setForm({ ...form, nilai_rupiah: e.target.value })}
+              placeholder="Contoh: 20000"
+              helperText="Nominal rupiah yang dicairkan (simulasi), tampil di struk payout."
+            />
+          )}
           <Input
             label="Deskripsi"
             type="textarea"

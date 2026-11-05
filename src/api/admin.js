@@ -23,6 +23,7 @@ const REWARD_STATUS_TO_UI = {
   diproses: 'Diproses',
   selesai: 'Selesai',
   ditolak: 'Ditolak',
+  gagal: 'Gagal',
   kedaluwarsa: 'Kedaluwarsa',
   dibatalkan: 'Dibatalkan',
 };
@@ -153,6 +154,27 @@ export async function selesaikanRewardApi(id, catatan = '') {
     body: JSON.stringify({ catatan_admin: catatan }),
   });
   return { ...res, data: normalizeReward(res.data) };
+}
+
+/** Mulai proses payout digital (pending -> diproses). */
+export async function prosesRewardApi(id) {
+  const res = await apiClient(`/admin/permintaan-reward/${id}/proses`, { method: 'POST' });
+  return { ...res, data: normalizeReward(res.data) };
+}
+
+/** Payout digital gagal -> refund koin + kembalikan stok. */
+export async function gagalRewardApi(id, catatan) {
+  const res = await apiClient(`/admin/permintaan-reward/${id}/gagal`, {
+    method: 'POST',
+    body: JSON.stringify({ catatan_admin: catatan }),
+  });
+  return { ...res, data: normalizeReward(res.data) };
+}
+
+/** Struk reward (endpoint user, diakses admin dengan scope admin). */
+export async function getRewardStrukApi(id) {
+  const res = await apiClient(`/permintaan-reward/${id}/struk`, { scope: 'admin' });
+  return res.data;
 }
 
 /** Batalkan kupon: lepas hold koin (atau refund legacy) + kembalikan stok. */

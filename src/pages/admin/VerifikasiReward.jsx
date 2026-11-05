@@ -1,17 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
 import QRCode from 'qrcode';
-import { RefreshCw, QrCode, Search, CheckCircle2, XCircle, Ticket } from 'lucide-react';
+import { RefreshCw, QrCode, Search, CheckCircle2, XCircle, Ticket, ReceiptText, PlayCircle, XOctagon } from 'lucide-react';
 import Badge from '../../components/common/Badge';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import Modal from '../../components/common/Modal';
-import { formatCoins, formatDateTime } from '../../utils/helpers';
+import { formatCoins, formatDateTime, formatNumber } from '../../utils/helpers';
 import {
   getAdminRewardsApi,
   getAdminRewardKuponApi,
   terbitkanRewardQrApi,
   selesaikanRewardApi,
+  prosesRewardApi,
+  gagalRewardApi,
   batalkanRewardApi,
+  getRewardStrukApi,
   getRewardPengaturanApi,
   updateRewardPengaturanApi,
 } from '../../api/admin';
@@ -117,6 +120,10 @@ export default function VerifikasiReward({ showToast }) {
 
   // { permintaan, qr, image, secondsLeft }
   const [qrState, setQrState] = useState(null);
+
+  // Struk payout (data dari endpoint struk).
+  const [strukState, setStrukState] = useState(null);
+  const [strukLoading, setStrukLoading] = useState(false);
 
   const loadRewardData = useCallback(() => {
     return getAdminRewardsApi({ status: filterStatus, search })
@@ -262,9 +269,9 @@ export default function VerifikasiReward({ showToast }) {
 
   const handleSelesaikan = async (permintaan) => {
     const ok = await confirm({
-      title: 'Tandai reward selesai?',
+      title: 'Tandai payout selesai?',
       message:
-        'Gunakan ini hanya untuk reward digital atau data lama. Koin sudah dipotong sebelumnya, jadi tidak ada pemotongan tambahan.',
+        'Pencairan disimulasikan: struk "Pencairan Berhasil - Simulasi" akan diterbitkan untuk member. Koin sudah dipotong saat klaim, tidak ada pemotongan tambahan.',
       confirmText: 'Tandai Selesai',
     });
 
@@ -275,9 +282,68 @@ export default function VerifikasiReward({ showToast }) {
       setQrState(null);
       loadRewardData();
       window.dispatchEvent(new Event('livora:stats-changed'));
-      if (showToast) showToast('Reward ditandai selesai.', 'success');
+      if (showToast) showToast('Payout ditandai selesai. Struk tersedia di riwayat member.', 'success');
     } catch (err) {
-      if (showToast) showToast(err.message || 'Gagal menyelesaikan reward.', 'error');
+      if (showToast) showToast(err.message || 'Gagal menyelesaikan payout.', 'error');
+    }
+  };
+
+  const handleProses = async (permintaan) => {
+    const ok = await confirm({
+      title: 'Proses payout digital?',
+      message:
+        'Status berubah menjadi Diproses. Setelah ini tandai Selesai (berhasil) atau Gagal (refund otomatis).',
+      confirmText: 'Proses Payout',
+    });
+
+    if (!ok) return;
+
+    try {
+      await prosesRewardApi(permintaan.id);
+      loadRewardData();
+      window.dispatchEvent(new Event('livora:stats-changed'));
+      if (showToast) showToast('Payout sedang diproses (simulasi).', 'success');
+    } catch (err) {
+      if (showToast) showToast(err.message || 'Gagal memproses payout.', 'error');
+    }
+  };
+
+  const handleGagal = async (permintaan) => {
+    const alasan = await confirm({
+      title: 'Tandai payout gagal?',
+      message: 'Koin member akan dikembalikan otomatis dan stok reward dikembalikan.',
+      withInput: true,
+      inputLabel: 'Alasan kegagalan',
+      inputPlaceholder: 'Mis. nomor e-wallet tidak terdaftar...',
+      defaultValue: 'Nomor e-wallet tidak terdaftar.',
+      confirmText: 'Tandai Gagal & Refund',
+      danger: true,
+    });
+
+    if (!alasan) return;
+
+    try {
+      const res = await gagalRewardApi(permintaan.id, alasan.trim());
+      loadRewardData();
+      window.dispatchEvent(new Event('livora:stats-changed'));
+      if (showToast) showToast(res.message || 'Payout gagal. Koin dikembalikan.', 'success');
+    } catch (err) {
+      if (showToast) showToast(err.message || 'Gagal menandai payout gagal.', 'error');
+    }
+  };
+
+  const handleLihatStruk = async (permintaan) => {
+    setStrukLoading(true);
+    setStrukState(null);
+
+    try {
+      const data = await getRewardStrukApi(permintaan.id);
+      setStrukState(data);
+    } catch (err) {
+      if (showToast) showToast(err.message || 'Gagal memuat struk.', 'error');
+      setStrukState(null);
+    } finally {
+      setStrukLoading(false);
     }
   };
 
@@ -318,7 +384,10 @@ export default function VerifikasiReward({ showToast }) {
     Number(item.koin_ditahan) > 0 &&
     ['pending', 'siap_diambil'].includes(item.status_mentah);
 
-  const isAktif = (item) => ['pending', 'siap_diambil', 'diproses'].includes(item.status_mentah);
+  const isLegacyFisik = (item) =>
+    item.reward?.tipe === 'barang' &&
+    Number(item.koin_ditahan) === 0 &&
+    item.status_mentah === 'pending';
 
   const renderAksi = (item) => {
     if (isFisikAktif(item)) {
@@ -344,7 +413,7 @@ export default function VerifikasiReward({ showToast }) {
       );
     }
 
-    if (isAktif(item)) {
+    if (item.status_mentah === 'pending' && (isLegacyFisik(item) || item.reward?.tipe === 'voucher')) {
       return (
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
           <Button
@@ -367,9 +436,70 @@ export default function VerifikasiReward({ showToast }) {
       );
     }
 
+    if (item.status_mentah === 'pending') {
+      return (
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={() => handleProses(item)}
+            leftIcon={<PlayCircle size={14} />}
+          >
+            Proses
+          </Button>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={() => handleBatalkan(item)}
+            leftIcon={<XCircle size={14} />}
+          >
+            Batalkan
+          </Button>
+        </div>
+      );
+    }
+
+    if (item.status_mentah === 'diproses') {
+      return (
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => handleSelesaikan(item)}
+            leftIcon={<CheckCircle2 size={14} />}
+          >
+            Tandai Selesai
+          </Button>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={() => handleGagal(item)}
+            leftIcon={<XOctagon size={14} />}
+          >
+            Gagal & Refund
+          </Button>
+        </div>
+      );
+    }
+
+    if (item.status_mentah === 'selesai') {
+      return (
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => handleLihatStruk(item)}
+          leftIcon={<ReceiptText size={14} />}
+        >
+          Struk
+        </Button>
+      );
+    }
+
     return (
       <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-        {item.status_mentah === 'selesai' ? 'Reward diserahkan' : 'Tidak bisa diproses'}
+        {['kedaluwarsa', 'dibatalkan', 'ditolak', 'gagal'].includes(item.status_mentah)
+          ? 'Tidak bisa diproses'
+          : 'Reward diserahkan'}
       </span>
     );
   };
@@ -401,7 +531,6 @@ export default function VerifikasiReward({ showToast }) {
     if (!kuponResult) return null;
 
     const item = kuponResult;
-    const fisik = item.reward?.tipe === 'barang';
 
     return (
       <div
@@ -462,6 +591,13 @@ export default function VerifikasiReward({ showToast }) {
           </div>
         </div>
 
+        {item.nomor_tujuan_digital && (
+          <div style={{ marginTop: '12px', fontSize: '0.82rem', color: '#334155' }}>
+            <span style={{ color: '#94a3b8', fontWeight: '600' }}>NO. E-WALLET: </span>
+            <span style={{ fontFamily: 'monospace' }}>{item.nomor_tujuan_digital}</span>
+          </div>
+        )}
+
         {isFisikAktif(item) && (
           <div style={{ display: 'flex', gap: '8px', marginTop: '16px', flexWrap: 'wrap' }}>
             <Button variant="primary" onClick={() => handleTerbitkanQr(item)} leftIcon={<QrCode size={15} />}>
@@ -473,13 +609,38 @@ export default function VerifikasiReward({ showToast }) {
           </div>
         )}
 
-        {!fisik && isAktif(item) && (
+        {!isFisikAktif(item) && item.status_mentah === 'pending' && (
+          <div style={{ display: 'flex', gap: '8px', marginTop: '16px', flexWrap: 'wrap' }}>
+            {isLegacyFisik(item) || item.reward?.tipe === 'voucher' ? (
+              <Button variant="secondary" onClick={() => handleSelesaikan(item)} leftIcon={<CheckCircle2 size={15} />}>
+                Tandai Selesai
+              </Button>
+            ) : (
+              <Button variant="primary" onClick={() => handleProses(item)} leftIcon={<PlayCircle size={15} />}>
+                Proses Payout
+              </Button>
+            )}
+            <Button variant="danger" onClick={() => handleBatalkan(item)} leftIcon={<XCircle size={15} />}>
+              Batalkan
+            </Button>
+          </div>
+        )}
+
+        {item.status_mentah === 'diproses' && (
           <div style={{ display: 'flex', gap: '8px', marginTop: '16px', flexWrap: 'wrap' }}>
             <Button variant="secondary" onClick={() => handleSelesaikan(item)} leftIcon={<CheckCircle2 size={15} />}>
               Tandai Selesai
             </Button>
-            <Button variant="danger" onClick={() => handleBatalkan(item)} leftIcon={<XCircle size={15} />}>
-              Batalkan
+            <Button variant="danger" onClick={() => handleGagal(item)} leftIcon={<XOctagon size={15} />}>
+              Gagal & Refund
+            </Button>
+          </div>
+        )}
+
+        {item.status_mentah === 'selesai' && (
+          <div style={{ marginTop: '16px' }}>
+            <Button variant="secondary" onClick={() => handleLihatStruk(item)} leftIcon={<ReceiptText size={15} />}>
+              Lihat Struk
             </Button>
           </div>
         )}
@@ -684,6 +845,11 @@ export default function VerifikasiReward({ showToast }) {
                       <div style={{ fontSize: '0.76rem', color: '#94a3b8' }}>
                         {TIPE_LABEL[item.reward?.tipe] || item.reward?.tipe || '-'}
                       </div>
+                      {item.nomor_tujuan_digital && (
+                        <div style={{ fontSize: '0.72rem', color: '#64748b', fontFamily: 'monospace', marginTop: '2px' }}>
+                          {item.nomor_tujuan_digital}
+                        </div>
+                      )}
                     </td>
 
                     <td
@@ -832,6 +998,109 @@ export default function VerifikasiReward({ showToast }) {
               Koin baru resmi dipotong setelah member menekan Konfirmasi. Jika QR kedaluwarsa,
               tekan Terbitkan QR Baru agar member dapat memindai ulang.
             </p>
+          </div>
+        )}
+      </Modal>
+
+      {/* Modal struk payout/pickup */}
+      <Modal
+        isOpen={strukLoading || Boolean(strukState)}
+        onClose={() => setStrukState(null)}
+        title={strukState?.judul || 'Struk Reward'}
+        subtitle="Pratinjau struk yang bisa diunduh member dari riwayat aplikasi."
+        maxWidth="440px"
+        footer={
+          <Button variant="ghost" onClick={() => setStrukState(null)}>
+            Tutup
+          </Button>
+        }
+      >
+        {strukLoading && (
+          <div style={{ textAlign: 'center', padding: '24px 0', color: '#64748b' }}>
+            Memuat struk...
+          </div>
+        )}
+
+        {strukState && (
+          <div>
+            {strukState.simulasi && (
+              <div
+                style={{
+                  padding: '10px 14px',
+                  borderRadius: '12px',
+                  backgroundColor: '#fffbeb',
+                  border: '1px solid #fde68a',
+                  color: '#92400e',
+                  fontSize: '0.82rem',
+                  fontWeight: '700',
+                  textAlign: 'center',
+                  marginBottom: '14px',
+                }}
+              >
+                SIMULASI - TIDAK ADA PENCAIRAN UANG NYATA
+              </div>
+            )}
+
+            <div
+              style={{
+                padding: '16px',
+                borderRadius: '12px',
+                backgroundColor: '#f8fafc',
+                border: '1px solid #e2e8f0',
+              }}
+            >
+              <div style={{ textAlign: 'center', marginBottom: '14px' }}>
+                <div style={{ fontFamily: 'monospace', fontWeight: '800', color: '#0f172a' }}>
+                  {strukState.nomor_struk}
+                </div>
+                <div style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                  {formatDateTime(strukState.tanggal)}
+                </div>
+              </div>
+
+              {[
+                ['Member', strukState.member?.nama || '-'],
+                ['Reward', strukState.reward?.nama || '-'],
+                ['Koin', `${formatCoins(strukState.koin)} koin`],
+                ...(strukState.reward?.nilai_rupiah
+                  ? [['Nilai', `Rp ${formatNumber(strukState.reward.nilai_rupiah)}`]]
+                  : []),
+                ...(strukState.nomor_tujuan
+                  ? [['No. E-Wallet', strukState.nomor_tujuan]]
+                  : []),
+                ['Metode', strukState.metode],
+                ['Kode Kupon', strukState.kode_klaim],
+              ].map(([label, nilai]) => (
+                <div
+                  key={label}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: '12px',
+                    marginBottom: '6px',
+                    fontSize: '0.85rem',
+                  }}
+                >
+                  <span style={{ color: '#64748b' }}>{label}</span>
+                  <span
+                    style={{
+                      fontWeight: 600,
+                      color: '#0f172a',
+                      textAlign: 'right',
+                      fontFamily: label === 'No. E-Wallet' || label === 'Kode Kupon' ? 'monospace' : undefined,
+                    }}
+                  >
+                    {nilai}
+                  </span>
+                </div>
+              ))}
+
+              {strukState.catatan && (
+                <p style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '10px', lineHeight: 1.5 }}>
+                  {strukState.catatan}
+                </p>
+              )}
+            </div>
           </div>
         )}
       </Modal>
