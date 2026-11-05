@@ -36,6 +36,19 @@ export function formatDate(dateString) {
   }
 }
 
+/** Tanggal + jam (untuk batas waktu kupon/QR). */
+export function formatDateTime(dateString) {
+  if (!dateString) return '-';
+  try {
+    return new Intl.DateTimeFormat('id-ID', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }).format(new Date(dateString));
+  } catch {
+    return dateString;
+  }
+}
+
 /** Perkiraan waktu baca artikel (±200 kata per menit), minimal 1 menit. */
 export function estimateReadingMinutes(text) {
   const words = String(text || '').trim().split(/\s+/).filter(Boolean).length;

@@ -19,9 +19,12 @@ const SETOR_STATUS_TO_UI = {
 
 const REWARD_STATUS_TO_UI = {
   pending: 'Pending',
+  siap_diambil: 'Siap Diambil',
   diproses: 'Diproses',
   selesai: 'Selesai',
   ditolak: 'Ditolak',
+  kedaluwarsa: 'Kedaluwarsa',
+  dibatalkan: 'Dibatalkan',
 };
 
 function normalizeSetor(item) {
@@ -33,7 +36,11 @@ function normalizeSetor(item) {
 }
 
 function normalizeReward(item) {
-  return { ...item, status: REWARD_STATUS_TO_UI[item.status] || item.status };
+  return {
+    ...item,
+    status_mentah: item.status,
+    status: REWARD_STATUS_TO_UI[item.status] || item.status,
+  };
 }
 
 /* ------------------------------- Dashboard ------------------------------- */
@@ -101,24 +108,72 @@ export async function batalkanSetorApi(id, catatan) {
 
 /* -------------------------- Verifikasi Reward ---------------------------- */
 
-export async function getAdminRewardsApi(status = '') {
-  const query = status ? `?status=${encodeURIComponent(status)}` : '';
-  const res = await apiClient(`/admin/permintaan-reward${query}`);
+/**
+ * Daftar permintaan tukar reward. `params` boleh string status (kompatibilitas
+ * lama) atau objek { status, search, tipe }.
+ */
+export async function getAdminRewardsApi(params = '') {
+  const options = typeof params === 'string' ? { status: params } : params;
+  const query = new URLSearchParams();
+  if (options.status) query.set('status', options.status);
+  if (options.search) query.set('search', options.search);
+  if (options.tipe) query.set('tipe', options.tipe);
+
+  const qs = query.toString();
+  const res = await apiClient(`/admin/permintaan-reward${qs ? `?${qs}` : ''}`);
   return unwrap(res.data).map(normalizeReward);
 }
 
-/**
- * Verifikasi reward: status 'Selesai' -> selesai, 'Ditolak' -> reject (refund koin).
- */
-export async function updateStatusRewardApi(id, status, catatan = '') {
-  const endpoint =
-    status === 'Selesai'
-      ? `/admin/permintaan-reward/${id}/selesai`
-      : `/admin/permintaan-reward/${id}/reject`;
+/** Admin mencari kupon berdasarkan kode (mis. LV-ABCD-2345). */
+export async function getAdminRewardKuponApi(kode) {
+  const res = await apiClient(`/admin/permintaan-reward/kupon/${encodeURIComponent(String(kode).trim())}`);
+  return normalizeReward(res.data);
+}
 
-  return await apiClient(endpoint, {
+/**
+ * Terbitkan QR pickup untuk kupon reward fisik.
+ * Respons: { permintaan, qr: { token, payload, expires_at, expires_in } }.
+ */
+export async function terbitkanRewardQrApi(id) {
+  const res = await apiClient(`/admin/permintaan-reward/${id}/qr`, { method: 'POST' });
+  return {
+    message: res.message,
+    permintaan: normalizeReward(res.data.permintaan),
+    qr: res.data.qr,
+  };
+}
+
+/**
+ * Selesaikan reward digital/legacy tanpa QR.
+ * Reward fisik baru (punya hold koin) wajib lewat QR pickup.
+ */
+export async function selesaikanRewardApi(id, catatan = '') {
+  const res = await apiClient(`/admin/permintaan-reward/${id}/selesai`, {
     method: 'POST',
     body: JSON.stringify({ catatan_admin: catatan }),
+  });
+  return { ...res, data: normalizeReward(res.data) };
+}
+
+/** Batalkan kupon: lepas hold koin (atau refund legacy) + kembalikan stok. */
+export async function batalkanRewardApi(id, catatan) {
+  const res = await apiClient(`/admin/permintaan-reward/${id}/batalkan`, {
+    method: 'POST',
+    body: JSON.stringify({ catatan_admin: catatan }),
+  });
+  return { ...res, data: normalizeReward(res.data) };
+}
+
+/** Pengaturan masa berlaku kupon (hari). */
+export async function getRewardPengaturanApi() {
+  const res = await apiClient('/admin/permintaan-reward/pengaturan');
+  return res.data;
+}
+
+export async function updateRewardPengaturanApi(masaBerlakuHari) {
+  return await apiClient('/admin/permintaan-reward/pengaturan', {
+    method: 'PUT',
+    body: JSON.stringify({ masa_berlaku_hari: masaBerlakuHari }),
   });
 }
 
