@@ -177,6 +177,33 @@ export async function getRewardStrukApi(id) {
   return res.data;
 }
 
+/**
+ * Riwayat top-up semua member (Midtrans Sandbox).
+ * opts: { status?, page? }
+ */
+export async function getAdminTopUpApi(opts = {}) {
+  const params = new URLSearchParams();
+  if (opts.status) params.set('status', opts.status);
+  if (opts.page) params.set('page', String(opts.page));
+  const qs = params.toString();
+  const res = await apiClient(`/admin/top-up${qs ? `?${qs}` : ''}`);
+  return res.data;
+}
+
+/** Pengaturan top up (kurs rupiah per koin & minimum nominal). */
+export async function getTopUpPengaturanApi() {
+  const res = await apiClient('/admin/top-up/pengaturan', { scope: 'admin' });
+  return res.data;
+}
+
+export async function updateTopUpPengaturanApi({ kurs_rupiah, minimum_rupiah }) {
+  const res = await apiClient('/admin/top-up/pengaturan', {
+    method: 'PUT',
+    body: JSON.stringify({ kurs_rupiah, minimum_rupiah }),
+  });
+  return res.data;
+}
+
 /** Batalkan kupon: lepas hold koin (atau refund legacy) + kembalikan stok. */
 export async function batalkanRewardApi(id, catatan) {
   const res = await apiClient(`/admin/permintaan-reward/${id}/batalkan`, {

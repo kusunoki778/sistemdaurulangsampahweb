@@ -19,6 +19,7 @@ import {
   Bell,
   Scale,
   UserCog,
+  Wallet,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { getAdminStatsApi } from '../../api/admin';
@@ -60,6 +61,7 @@ const MENU = [
   { type: 'link', to: '/admin/master/kategori', label: 'Kategori Sampah', icon: Folder },
   { type: 'link', to: '/admin/master/jenis', label: 'Jenis Sampah', icon: Layers },
   { type: 'link', to: '/admin/master/nilai-tukar', label: 'Nilai Tukar Koin', icon: Scale },
+  { type: 'link', to: '/admin/master/top-up', label: 'Top Up Koin', icon: Wallet },
   { type: 'link', to: '/admin/master/reward', label: 'Katalog Reward', icon: Package },
   { type: 'group', label: 'Komunikasi & Sistem' },
   {
@@ -83,6 +85,7 @@ const BREADCRUMBS = {
   '/admin/master/kategori': 'Master Kategori Sampah',
   '/admin/master/jenis': 'Master Jenis Sampah',
   '/admin/master/nilai-tukar': 'Nilai Tukar Koin',
+  '/admin/master/top-up': 'Top Up Koin',
   '/admin/master/reward': 'Katalog Reward',
   '/admin/gamifikasi/kuis': 'Kuis Harian',
   '/admin/gamifikasi/misi': 'Misi Member',

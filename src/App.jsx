@@ -29,6 +29,7 @@ import GamifikasiKuis from './pages/admin/GamifikasiKuis';
 import GamifikasiMisi from './pages/admin/GamifikasiMisi';
 import Pengguna from './pages/admin/Pengguna';
 import NilaiTukarKoin from './pages/admin/NilaiTukarKoin';
+import KelolaTopUp from './pages/admin/KelolaTopUp';
 import ProfilAdmin from './pages/admin/ProfilAdmin';
 
 /**
@@ -332,6 +333,7 @@ function AppShell() {
                 path="/admin/master/nilai-tukar"
                 element={<NilaiTukarKoin showToast={showToast} />}
               />
+              <Route path="/admin/master/top-up" element={<KelolaTopUp showToast={showToast} />} />
 
               {/* Gamifikasi */}
               <Route
